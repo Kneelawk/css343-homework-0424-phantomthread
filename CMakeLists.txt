@@ -13,7 +13,7 @@ set(TEST_SRC_DIR test)
 
 # Source Files
 set(MAIN_SRC_FILE src/main.cpp)
-set(MAIN_SRC_FILES src/tests.cpp)
+set(MAIN_SRC_FILES src/tests.cpp src/utils.cpp src/min_spanning_tree.cpp)
 #set(TEST_SRC_FILES test/tests.cpp)
 
 add_executable(${MAIN_EXECUTABLE_NAME})

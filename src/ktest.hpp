@@ -88,8 +88,8 @@ namespace ktest {
 #define KTEST_KASSERT_RES_BASE(desc, check) ::ktest::KAssertionResult((::std::stringstream() << desc).str(), (check))
 
     inline KAssertionResult ktest_assert_true(const std::string &checkStr, const bool check) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_TRUE - Expected the following to be true:\n  '" << checkStr << "': " << check,
-                                 check);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_TRUE - Expected the following to be true:\n  '" << checkStr << "': " << check, check);
     }
 
     /// Asserts that an expression results in 'true'.
@@ -104,24 +104,58 @@ namespace ktest {
 #define KASSERT_FALSE(check) KTEST_KASSERT_BASE(::ktest::ktest_assert_false(#check, (check)))
 
     template<typename E, typename A>
-    KAssertionResult ktest_assert_eq(const std::string &expectedStr, const std::string &actualStr, const E &expected, const A &actual) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_EQ - Expected the following to be equal:\n  '" << expectedStr << "': " << expected << "\n  '" << actualStr << "': " << actual, expected == actual);
+    KAssertionResult ktest_assert_eq(const std::string &expectedStr, const std::string &actualStr, const E &expected,
+                                     const A &actual) {
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_EQ - Expected the following to be equal:\n  '" << expectedStr << "': " << expected << "\n  '" <<
+            actualStr << "': " << actual, expected == actual);
     }
 
     /// Asserts that two expressions are equal.
 #define KASSERT_EQ(expected, actual) KTEST_KASSERT_BASE(::ktest::ktest_assert_eq(#expected, #actual, (expected), (actual)))
 
     template<typename E, typename A>
-    KAssertionResult ktest_assert_ne(const std::string &expectedStr, const std::string &actualStr, const E &expected, const A &actual) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_NE - Expected the following to be not equal:\n  '" << expectedStr << "': " << expected << "\n  '" << actualStr << "': " << actual, expected != actual);
+    KAssertionResult ktest_assert_ne(const std::string &expectedStr, const std::string &actualStr, const E &expected,
+                                     const A &actual) {
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_NE - Expected the following to be not equal:\n  '" << expectedStr << "': " << expected << "\n  '" <<
+            actualStr << "': " << actual, expected != actual);
     }
 
     /// Asserts that two expressions are equal.
 #define KASSERT_NE(expected, actual) KTEST_KASSERT_BASE(::ktest::ktest_assert_ne(#expected, #actual, (expected), (actual)))
 
+    template<typename E, typename A, typename Ap>
+    KAssertionResult ktest_assert_approx_eq(const std::string &expectedStr, const std::string &actualStr,
+                                            const E &expected, const A &actual, const Ap &approx) {
+        auto diff = std::abs(expected - actual);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_APPROX_EQ - Expected the following to be approximately equal:\n  '" << expectedStr << "': " <<
+            expected << "\n  '" << actualStr << "': " << actual << "\n  within: " << approx << "\n  difference: " <<
+            diff, diff <= approx);
+    }
+
+    /// Asserts that two expressions are equal.
+#define KASSERT_APPROX_EQ(expected, actual, approx) KTEST_KASSERT_BASE(::ktest::ktest_assert_approx_eq(#expected, #actual, (expected), (actual), (approx)))
+
+    template<typename E, typename A, typename Ap>
+    KAssertionResult ktest_assert_approx_ne(const std::string &expectedStr, const std::string &actualStr,
+                                            const E &expected, const A &actual, const Ap &approx) {
+        auto diff = std::abs(expected - actual);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_APPROX_NE - Expected the following to not be approximately equal:\n  '" << expectedStr << "': " <<
+            expected << "\n  '" << actualStr << "': " << actual << "\n  within: " << approx << "\n  difference: " <<
+            diff, diff > approx);
+    }
+
+    /// Asserts that two expressions are equal.
+#define KASSERT_APPROX_NE(expected, actual, approx) KTEST_KASSERT_BASE(::ktest::ktest_assert_approx_ne(#expected, #actual, (expected), (actual), (approx)))
+
     template<typename A, typename B>
     KAssertionResult ktest_assert_gt(const std::string &aStr, const std::string &bStr, const A &a, const B &b) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_GT - Expected the following 'a' to be greater than 'b':\n  a: '" << aStr << "': " << a << "\n  b: '" << bStr << "': " << b, a > b);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_GT - Expected the following 'a' to be greater than 'b':\n  a: '" << aStr << "': " << a << "\n  b: '"
+            << bStr << "': " << b, a > b);
     }
 
     /// Asserts that two expressions are equal.
@@ -129,7 +163,9 @@ namespace ktest {
 
     template<typename A, typename B>
     KAssertionResult ktest_assert_ge(const std::string &aStr, const std::string &bStr, const A &a, const B &b) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_GT - Expected the following 'a' to be greater than or equal to 'b':\n  a: '" << aStr << "': " << a << "\n  b: '" << bStr << "': " << b, a >= b);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_GT - Expected the following 'a' to be greater than or equal to 'b':\n  a: '" << aStr << "': " << a
+            << "\n  b: '" << bStr << "': " << b, a >= b);
     }
 
     /// Asserts that two expressions are equal.
@@ -137,7 +173,9 @@ namespace ktest {
 
     template<typename A, typename B>
     KAssertionResult ktest_assert_lt(const std::string &aStr, const std::string &bStr, const A &a, const B &b) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_GT - Expected the following 'a' to be less than 'b':\n  a: '" << aStr << "': " << a << "\n  b: '" << bStr << "': " << b, a < b);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_GT - Expected the following 'a' to be less than 'b':\n  a: '" << aStr << "': " << a << "\n  b: '" <<
+            bStr << "': " << b, a < b);
     }
 
     /// Asserts that two expressions are equal.
@@ -145,7 +183,9 @@ namespace ktest {
 
     template<typename A, typename B>
     KAssertionResult ktest_assert_le(const std::string &aStr, const std::string &bStr, const A &a, const B &b) {
-        return KTEST_KASSERT_RES_BASE("ASSERT_GT - Expected the following 'a' to be less than or equal to 'b':\n  a: '" << aStr << "': " << a << "\n  b: '" << bStr << "': " << b, a <= b);
+        return KTEST_KASSERT_RES_BASE(
+            "ASSERT_GT - Expected the following 'a' to be less than or equal to 'b':\n  a: '" << aStr << "': " << a <<
+            "\n  b: '" << bStr << "': " << b, a <= b);
     }
 
     /// Asserts that two expressions are equal.
