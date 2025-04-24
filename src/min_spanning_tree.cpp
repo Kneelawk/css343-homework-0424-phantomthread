@@ -34,13 +34,13 @@ std::vector<CityLink> minSpanningTree(const std::vector<CityCoords> &cities) {
 
         const CityCoords newFrom = shortest.to;
         // apply min distances with new link in mind
-        for (size_t i = 0; i < links.size(); i++) {
+        for (auto &link: links) {
             // only update a link if it is shorter to the new city than any of the old ones
-            const double newDistance = newFrom - links[i].to;
-            if (newDistance < links[i].distance) {
-                links[i].distance = newDistance;
+            const double newDistance = newFrom - link.to;
+            if (newDistance < link.distance) {
+                link.distance = newDistance;
                 // keep track of where the shortest links are coming from
-                links[i].from = newFrom;
+                link.from = newFrom;
             }
         }
     }
